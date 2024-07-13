@@ -1,5 +1,6 @@
 package com.github.malahor.equeue.client;
 
+import com.github.malahor.equeue.domain.Customer;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
