@@ -4,8 +4,8 @@ import com.github.malahor.equeue.domain.Customer;
 import java.util.HashMap;
 import java.util.UUID;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.common.serialization.UUIDSerializer;
-import org.apache.kafka.common.serialization.VoidSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,30 +21,30 @@ public class KafkaProducerConfig {
   private String bootstrapAddress;
 
   @Bean
-  public ProducerFactory<UUID, Void> registerProducerFactory() {
+  public ProducerFactory<String, UUID> registerProducerFactory() {
     var props = new HashMap<String, Object>();
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-    props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, UUIDSerializer.class);
-    props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, VoidSerializer.class);
+    props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+    props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, UUIDSerializer.class);
     return new DefaultKafkaProducerFactory<>(props);
   }
 
   @Bean
-  public KafkaTemplate<UUID, Void> registerKafkaTemplate() {
+  public KafkaTemplate<String, UUID> registerKafkaTemplate() {
     return new KafkaTemplate<>(registerProducerFactory());
   }
 
   @Bean
-  public ProducerFactory<UUID, Customer> formProducerFactory() {
+  public ProducerFactory<String, Customer> formProducerFactory() {
     var props = new HashMap<String, Object>();
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-    props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, UUIDSerializer.class);
+    props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
     return new DefaultKafkaProducerFactory<>(props);
   }
 
   @Bean
-  public KafkaTemplate<UUID, Customer> formKafkaTemplate() {
+  public KafkaTemplate<String, Customer> formKafkaTemplate() {
     return new KafkaTemplate<>(formProducerFactory());
   }
 }

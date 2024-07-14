@@ -4,8 +4,8 @@ import com.github.malahor.equeue.domain.Customer;
 import java.util.HashMap;
 import java.util.UUID;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.UUIDDeserializer;
-import org.apache.kafka.common.serialization.VoidDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,34 +23,35 @@ public class KafkaConsumerConfig {
   private String bootstrapAddress;
 
   @Bean
-  public ConsumerFactory<UUID, Void> registerConsumerFactory() {
+  public ConsumerFactory<String, UUID> registerConsumerFactory() {
     var props = new HashMap<String, Object>();
     props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, UUIDDeserializer.class);
-    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, VoidDeserializer.class);
+    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, UUIDDeserializer.class);
     return new DefaultKafkaConsumerFactory<>(props);
   }
 
   @Bean
-  ConcurrentKafkaListenerContainerFactory<UUID, Void> registerListenerContainerFactory() {
-    var factory = new ConcurrentKafkaListenerContainerFactory<UUID, Void>();
+  ConcurrentKafkaListenerContainerFactory<String, UUID> registerListenerContainerFactory() {
+    var factory = new ConcurrentKafkaListenerContainerFactory<String, UUID>();
     factory.setConsumerFactory(registerConsumerFactory());
     factory.getContainerProperties().setPollTimeout(3000);
     return factory;
   }
 
   @Bean
-  public ConsumerFactory<UUID, Customer> formConsumerFactory() {
+  public ConsumerFactory<String, Customer> formConsumerFactory() {
     var props = new HashMap<String, Object>();
     props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, UUIDDeserializer.class);
+    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-    return new DefaultKafkaConsumerFactory<>(props);
+    return new DefaultKafkaConsumerFactory<>(
+        props, new StringDeserializer(), new JsonDeserializer<>(Customer.class));
   }
 
   @Bean
-  ConcurrentKafkaListenerContainerFactory<UUID, Customer> formListenerContainerFactory() {
-    var factory = new ConcurrentKafkaListenerContainerFactory<UUID, Customer>();
+  ConcurrentKafkaListenerContainerFactory<String, Customer> formListenerContainerFactory() {
+    var factory = new ConcurrentKafkaListenerContainerFactory<String, Customer>();
     factory.setConsumerFactory(formConsumerFactory());
     factory.getContainerProperties().setPollTimeout(3000);
     return factory;
