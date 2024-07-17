@@ -2,10 +2,8 @@ package com.github.malahor.equeue.client.config;
 
 import com.github.malahor.equeue.domain.Customer;
 import java.util.HashMap;
-import java.util.UUID;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.apache.kafka.common.serialization.UUIDSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,16 +19,16 @@ public class KafkaProducerConfig {
   private String bootstrapAddress;
 
   @Bean
-  public ProducerFactory<String, UUID> registerProducerFactory() {
+  public ProducerFactory<String, String> registerProducerFactory() {
     var props = new HashMap<String, Object>();
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
     props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-    props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, UUIDSerializer.class);
+    props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     return new DefaultKafkaProducerFactory<>(props);
   }
 
   @Bean
-  public KafkaTemplate<String, UUID> registerKafkaTemplate() {
+  public KafkaTemplate<String, String> registerKafkaTemplate() {
     return new KafkaTemplate<>(registerProducerFactory());
   }
 

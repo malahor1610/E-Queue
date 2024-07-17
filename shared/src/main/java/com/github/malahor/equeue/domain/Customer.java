@@ -2,7 +2,6 @@ package com.github.malahor.equeue.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Customer {
 
-  @Id private UUID id;
+  @Id private String id;
   private Integer number;
   private String firstName;
   private String lastName;

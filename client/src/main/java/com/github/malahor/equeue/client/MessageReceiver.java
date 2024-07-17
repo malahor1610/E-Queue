@@ -10,13 +10,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class MessageReceiver {
 
+  private final ClientService service;
+
   @KafkaListener(
       id = KafkaTopicConfig.CONFIRM_TOPIC_NAME,
       topics = KafkaTopicConfig.CONFIRM_TOPIC_NAME,
       containerFactory = "confirmListenerContainerFactory")
   public void register(QueuePosition queuePosition) {
-    System.out.printf(
-        "Your number is %d and there are %d people before You",
-        queuePosition.getNumber(), queuePosition.getPending());
+    service.confirm(queuePosition);
   }
 }

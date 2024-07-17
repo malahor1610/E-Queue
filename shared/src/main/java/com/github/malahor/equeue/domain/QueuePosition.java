@@ -1,7 +1,5 @@
 package com.github.malahor.equeue.domain;
 
-import java.util.UUID;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class QueuePosition {
 
-  private UUID id;
+  private String id;
   private Integer number;
   private Integer pending;
+
+  @Override
+  public String toString() {
+    return String.format("Your number is %d and there are %d people before You", number, pending);
+  }
 }

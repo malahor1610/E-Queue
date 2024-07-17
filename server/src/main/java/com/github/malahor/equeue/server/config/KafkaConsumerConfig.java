@@ -2,10 +2,8 @@ package com.github.malahor.equeue.server.config;
 
 import com.github.malahor.equeue.domain.Customer;
 import java.util.HashMap;
-import java.util.UUID;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.common.serialization.UUIDDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,17 +21,17 @@ public class KafkaConsumerConfig {
   private String bootstrapAddress;
 
   @Bean
-  public ConsumerFactory<String, UUID> registerConsumerFactory() {
+  public ConsumerFactory<String, String> registerConsumerFactory() {
     var props = new HashMap<String, Object>();
     props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
     props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, UUIDDeserializer.class);
+    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     return new DefaultKafkaConsumerFactory<>(props);
   }
 
   @Bean
-  ConcurrentKafkaListenerContainerFactory<String, UUID> registerListenerContainerFactory() {
-    var factory = new ConcurrentKafkaListenerContainerFactory<String, UUID>();
+  ConcurrentKafkaListenerContainerFactory<String, String> registerListenerContainerFactory() {
+    var factory = new ConcurrentKafkaListenerContainerFactory<String, String>();
     factory.setConsumerFactory(registerConsumerFactory());
     factory.getContainerProperties().setPollTimeout(3000);
     return factory;
