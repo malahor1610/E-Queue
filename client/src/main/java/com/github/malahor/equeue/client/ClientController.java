@@ -52,10 +52,15 @@ public class ClientController {
   }
 
   @PostMapping("/form")
-  public ModelAndView form(
+  public RedirectView form(
       @CookieValue(name = "user-id") String id, @ModelAttribute("form") Form form) {
     Thread.startVirtualThread(() -> service.sendForm(id, form));
-    return new ModelAndView("form");
+    return new RedirectView("/result");
+  }
+
+  @GetMapping("/result")
+  public ModelAndView resultView() {
+    return new ModelAndView("result");
   }
 
   private boolean userIdCookieMissing(HttpServletRequest request) {
