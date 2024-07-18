@@ -22,6 +22,6 @@ public class QueueService {
   public synchronized QueuePosition putIntoQueue(String id) {
     number++;
     queue.offer(id);
-    return new QueuePosition(id, number, queue.size() - 1);
+    return QueuePosition.builder().id(id).number(number).pending(queue.size() - 1).build();
   }
 }

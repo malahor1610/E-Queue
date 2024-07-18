@@ -7,11 +7,9 @@ import java.util.Arrays;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
@@ -28,33 +26,32 @@ public class ClientController {
 
   @GetMapping
   public RedirectView home() {
-    return new RedirectView("/start");
+    return new RedirectView("/register");
   }
 
-  @GetMapping("/start")
-  public ModelAndView start(
-      ModelMap model,
-      @ModelAttribute("success") String success,
-      HttpServletRequest request,
-      HttpServletResponse response) {
-    model.addAttribute("success", success);
-    if (request.getCookies() == null
-        || Arrays.stream(request.getCookies())
-            .noneMatch(cookie -> cookie.getName().equals("user-id"))) {
-      var id = UUID.randomUUID().toString();
-      var cookie = new Cookie("user-id", id);
-      cookie.setHttpOnly(true);
-      cookie.setDomain("localhost");
-      response.addCookie(cookie);
-    }
-    return new ModelAndView("start");
+  @GetMapping("/register")
+  public ModelAndView start(HttpServletRequest request, HttpServletResponse response) {
+    if (userIdCookieMissing(request)) attachUserIdCookie(response);
+    return new ModelAndView("register");
   }
 
   @PostMapping("/register")
-  public RedirectView registerInQueue(
-      RedirectAttributes attributes, @CookieValue(name = "user-id") String id) {
-    service.register(id);
-    attributes.addFlashAttribute("success", "Confirmed stand in the queue");
-    return new RedirectView("/start");
+  public ModelAndView registerInQueue(@CookieValue(name = "user-id") String id) {
+    Thread.startVirtualThread(() -> service.register(id));
+    return new ModelAndView("register");
+  }
+
+  private boolean userIdCookieMissing(HttpServletRequest request) {
+    return request.getCookies() == null
+        || Arrays.stream(request.getCookies())
+            .noneMatch(cookie -> cookie.getName().equals("user-id"));
+  }
+
+  private void attachUserIdCookie(HttpServletResponse response) {
+    var id = UUID.randomUUID().toString();
+    var cookie = new Cookie("user-id", id);
+    cookie.setHttpOnly(true);
+    cookie.setDomain("localhost");
+    response.addCookie(cookie);
   }
 }

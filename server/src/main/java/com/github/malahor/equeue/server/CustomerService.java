@@ -21,7 +21,8 @@ public class CustomerService {
 
   private void handleAlreadyRegistered(String id, Integer i) {
     var record = repository.findById(id).orElseThrow();
-    var queuePosition = new QueuePosition(record.getId(), record.getNumber(), i);
+    var queuePosition =
+        QueuePosition.builder().id(record.getId()).number(record.getNumber()).pending(i).build();
     sender.confirm(queuePosition);
   }
 
