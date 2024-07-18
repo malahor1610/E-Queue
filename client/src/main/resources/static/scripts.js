@@ -25,8 +25,7 @@ function initializeResultSse() {
         if (e.readyState == EventSource.CLOSED) {
             console.log("Closed");
         } else {
-            $('#reject').attr("style", "display: block;");
-            $('#rejectMessage').text(e.data);
+            initializeResultSse();
         }
     });
 }
