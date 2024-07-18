@@ -1,7 +1,7 @@
 package com.github.malahor.equeue.server;
 
 import com.github.malahor.equeue.config.KafkaTopicConfig;
-import com.github.malahor.equeue.domain.Customer;
+import com.github.malahor.equeue.domain.Form;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ public class MessageReceiver {
       id = KafkaTopicConfig.FORM_TOPIC_NAME,
       topics = KafkaTopicConfig.FORM_TOPIC_NAME,
       containerFactory = "formListenerContainerFactory")
-  public void receiveForm(Customer customer) {
-    service.receiveForm(customer);
+  public void receiveForm(Form form) {
+    service.receiveForm(form);
   }
 }

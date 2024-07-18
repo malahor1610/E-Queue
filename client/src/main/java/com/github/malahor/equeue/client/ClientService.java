@@ -1,6 +1,6 @@
 package com.github.malahor.equeue.client;
 
-import com.github.malahor.equeue.domain.Customer;
+import com.github.malahor.equeue.domain.Form;
 import com.github.malahor.equeue.domain.QueuePosition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,9 +16,9 @@ public class ClientService {
     sender.register(id);
   }
 
-  public void sendForm(String id, Customer customer) {
-    customer.setId(id);
-    sender.sendForm(customer);
+  public void sendForm(String id, Form form) {
+    form.setId(id);
+    sender.sendForm(form);
   }
 
   public void confirm(QueuePosition queuePosition) {

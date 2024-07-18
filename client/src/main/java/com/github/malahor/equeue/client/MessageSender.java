@@ -1,7 +1,7 @@
 package com.github.malahor.equeue.client;
 
 import com.github.malahor.equeue.config.KafkaTopicConfig;
-import com.github.malahor.equeue.domain.Customer;
+import com.github.malahor.equeue.domain.Form;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class MessageSender {
 
   private final KafkaTemplate<String, String> registerKafkaTemplate;
-  private final KafkaTemplate<String, Customer> formKafkaTemplate;
+  private final KafkaTemplate<String, Form> formKafkaTemplate;
 
   @SneakyThrows
   public void register(String id) {
@@ -20,7 +20,7 @@ public class MessageSender {
   }
 
   @SneakyThrows
-  public void sendForm(Customer customer) {
-    formKafkaTemplate.send(KafkaTopicConfig.FORM_TOPIC_NAME, customer);
+  public void sendForm(Form form) {
+    formKafkaTemplate.send(KafkaTopicConfig.FORM_TOPIC_NAME, form);
   }
 }

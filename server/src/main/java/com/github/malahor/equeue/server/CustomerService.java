@@ -1,6 +1,7 @@
 package com.github.malahor.equeue.server;
 
 import com.github.malahor.equeue.domain.Customer;
+import com.github.malahor.equeue.domain.Form;
 import com.github.malahor.equeue.domain.QueuePosition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,13 +34,15 @@ public class CustomerService {
     sender.confirm(queuePosition);
   }
 
-  public void receiveForm(Customer customer) {
-    repository.findById(customer.getId()).ifPresent(c -> handleAttachingForm(c, customer));
+  public void receiveForm(Form form) {
+    repository.findById(form.getId()).ifPresent(customer -> handleAttachingForm(customer, form));
   }
 
-  private void handleAttachingForm(Customer c, Customer customer) {
-    c.updateWithForm(customer);
-    System.out.printf("Attached form for %s with name %s %s", customer.getId(), customer.getFirstName(), customer.getLastName());
-    repository.save(c);
+  private void handleAttachingForm(Customer customer, Form form) {
+    customer.updateWithForm(form);
+    System.out.printf(
+        "Attached form for %s with name %s %s",
+        form.getId(), form.getFirstName(), form.getLastName());
+    repository.save(customer);
   }
 }

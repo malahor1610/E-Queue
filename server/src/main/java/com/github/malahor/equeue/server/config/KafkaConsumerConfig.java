@@ -1,6 +1,6 @@
 package com.github.malahor.equeue.server.config;
 
-import com.github.malahor.equeue.domain.Customer;
+import com.github.malahor.equeue.domain.Form;
 import java.util.HashMap;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -38,18 +38,18 @@ public class KafkaConsumerConfig {
   }
 
   @Bean
-  public ConsumerFactory<String, Customer> formConsumerFactory() {
+  public ConsumerFactory<String, Form> formConsumerFactory() {
     var props = new HashMap<String, Object>();
     props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
     props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
     return new DefaultKafkaConsumerFactory<>(
-        props, new StringDeserializer(), new JsonDeserializer<>(Customer.class));
+        props, new StringDeserializer(), new JsonDeserializer<>(Form.class));
   }
 
   @Bean
-  ConcurrentKafkaListenerContainerFactory<String, Customer> formListenerContainerFactory() {
-    var factory = new ConcurrentKafkaListenerContainerFactory<String, Customer>();
+  ConcurrentKafkaListenerContainerFactory<String, Form> formListenerContainerFactory() {
+    var factory = new ConcurrentKafkaListenerContainerFactory<String, Form>();
     factory.setConsumerFactory(formConsumerFactory());
     factory.getContainerProperties().setPollTimeout(3000);
     return factory;

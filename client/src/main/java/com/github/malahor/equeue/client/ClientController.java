@@ -1,7 +1,7 @@
 package com.github.malahor.equeue.client;
 
-import com.github.malahor.equeue.domain.Customer;
 import com.github.malahor.equeue.domain.CustomerTopic;
+import com.github.malahor.equeue.domain.Form;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -47,13 +47,14 @@ public class ClientController {
   @GetMapping("/form")
   public ModelAndView formView(ModelMap model) {
     model.addAttribute("topics", CustomerTopic.values());
-    model.addAttribute("form", new Customer());
+    model.addAttribute("form", new Form());
     return new ModelAndView("form");
   }
 
   @PostMapping("/form")
-  public ModelAndView form(@CookieValue(name = "user-id") String id, @ModelAttribute("form") Customer customer) {
-    Thread.startVirtualThread(() -> service.sendForm(id, customer));
+  public ModelAndView form(
+      @CookieValue(name = "user-id") String id, @ModelAttribute("form") Form form) {
+    Thread.startVirtualThread(() -> service.sendForm(id, form));
     return new ModelAndView("form");
   }
 

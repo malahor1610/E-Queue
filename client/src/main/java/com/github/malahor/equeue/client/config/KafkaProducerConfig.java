@@ -1,6 +1,6 @@
 package com.github.malahor.equeue.client.config;
 
-import com.github.malahor.equeue.domain.Customer;
+import com.github.malahor.equeue.domain.Form;
 import java.util.HashMap;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -33,7 +33,7 @@ public class KafkaProducerConfig {
   }
 
   @Bean
-  public ProducerFactory<String, Customer> formProducerFactory() {
+  public ProducerFactory<String, Form> formProducerFactory() {
     var props = new HashMap<String, Object>();
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
     props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -42,7 +42,7 @@ public class KafkaProducerConfig {
   }
 
   @Bean
-  public KafkaTemplate<String, Customer> formKafkaTemplate() {
+  public KafkaTemplate<String, Form> formKafkaTemplate() {
     return new KafkaTemplate<>(formProducerFactory());
   }
 }
