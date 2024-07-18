@@ -47,13 +47,15 @@
                   </select>
                 </div>
                 <div class="row">
-                  <label class="form-label my-3 w-auto align-content-center"
+                  <label class="form-label my-3 w-auto"
                          for="comment">Comment
                   </label>
                   <textarea class="form-control"
                             id="comment"
-                            rows="20"
+                            rows="15"
                             th:field="${form.comment}"></textarea>
+                </div>
+                <div class="text-end">
                   <button class="my-3 btn btn-primary w-auto"
                           type="submit">Submit
                   </button>
