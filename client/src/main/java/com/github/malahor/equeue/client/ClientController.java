@@ -39,8 +39,9 @@ public class ClientController {
   }
 
   @PostMapping("/register")
-  public ModelAndView register(@CookieValue(name = "user-id") String id) {
+  public ModelAndView register(ModelMap model, @CookieValue(name = "user-id") String id) {
     Thread.startVirtualThread(() -> service.register(id));
+    model.addAttribute("initializeEventEmitter", true);
     return new ModelAndView("register");
   }
 

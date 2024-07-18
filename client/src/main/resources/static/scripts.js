@@ -32,6 +32,5 @@ function initializeResultSse() {
 }
 
 function dismissModal() {
-    $('#acknowledgeConfirmation').attr("style", "display: none;");
     $('#rejectedConfirmation').attr("style", "display: none;");
 }

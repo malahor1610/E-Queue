@@ -2,10 +2,8 @@
 <html lang="en"
       th:replace="~{shell/layout :: layout(~{::section}, ~{::script}, ${'E-Queue: Registration'})}"
       xmlns:th="http://www.thymeleaf.org">
-  <script>
-    $( document ).ready(function() {
-      initializeSse();
-    });
+  <script th:if="${initializeEventEmitter}">
+    initializeSse();
   </script>
   <section class="w-75 align-self-center">
     <div class="row mt-4">
