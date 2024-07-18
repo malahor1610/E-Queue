@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en"
+      th:replace="~{shell/layout :: layout(~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+  <section class="w-75 align-self-center">
+    <div class="row mt-4">
+      <div class="col-xl-1"></div>
+      <div class="col-xl-10">
+        <div class="card mb-3 px-0">
+          <div class="card-body">
+            <div class="container">
+              <h3 class="my-3 text-center"
+                  th:text="'Please fill up the form in advance so that we can save some time'"></h3>
+              <form class="justify-content-center"
+                    th:action="@{'/form'}"
+                    th:method="post"
+                    th:object="${form}">
+                <div class="row">
+                  <label class="form-label my-3 w-auto align-content-center"
+                         for="firstName">First name
+                  </label>
+                  <input class="form-control my-3 me-3 w-auto"
+                         id="firstName"
+                         th:field="${form.firstName}"
+                         type="text">
+                </div>
+                <div class="row">
+                  <label class="form-label my-3 w-auto align-content-center"
+                         for="lastName">Last name
+                  </label>
+                  <input class="form-control my-3 me-3 w-auto"
+                         id="lastName"
+                         th:field="${form.lastName}"
+                         type="text">
+                </div>
+                <div class="row">
+                  <label class="form-label my-3 w-auto align-content-center"
+                         for="topic">Topic
+                  </label>
+                  <select class="form-select my-3 me-3 w-auto"
+                          id="topic"
+                          th:field="${form.topic}">
+                    <option th:each="option : ${topics}"
+                            th:text="${option.name}"
+                            th:value="${option}">
+                    </option>
+                  </select>
+                </div>
+                <div class="row">
+                  <label class="form-label my-3 w-auto align-content-center"
+                         for="comment">Comment
+                  </label>
+                  <textarea class="form-control"
+                            id="comment"
+                            rows="20"
+                            th:field="${form.comment}"></textarea>
+                  <button class="my-3 btn btn-primary w-auto"
+                          type="submit">Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-1"></div>
+    </div>
+    <div class="modal fade show"
+         id="acknowledgeConfirmation"
+         tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Form sending success</h5>
+          </div>
+          <div class="modal-body">
+            <p id="confirmMessage"></p>
+          </div>
+          <div class="modal-footer">
+            <a th:href="@{/wait}">
+              <button class="btn btn-primary"
+                      type="button">OK
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade show"
+         id="rejectedConfirmation"
+         tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Something went wrong</h5>
+          </div>
+          <div class="modal-body">
+            <p>Please try submitting again</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary"
+                    onclick="dismissModal()"
+                    type="button">OK
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</html>

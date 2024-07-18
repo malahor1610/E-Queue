@@ -32,4 +32,14 @@ public class CustomerService {
     repository.save(customer);
     sender.confirm(queuePosition);
   }
+
+  public void receiveForm(Customer customer) {
+    repository.findById(customer.getId()).ifPresent(c -> handleAttachingForm(c, customer));
+  }
+
+  private void handleAttachingForm(Customer c, Customer customer) {
+    c.updateWithForm(customer);
+    System.out.printf("Attached form for %s with name %s %s", customer.getId(), customer.getFirstName(), customer.getLastName());
+    repository.save(c);
+  }
 }

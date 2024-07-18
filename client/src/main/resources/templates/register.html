@@ -10,7 +10,7 @@
           <div class="card-body">
             <div class="container">
               <h3 class="my-3 text-center"
-                  th:text="'Welcome to registration page, stand in a queue and wait for Your turn'"></h3>
+                  th:text="'Welcome to registration page, stand (hihihi) in a queue and wait for Your turn'"></h3>
               <form class="row justify-content-center"
                     th:action="@{'/register'}"
                     th:method="post">
@@ -24,7 +24,9 @@
       </div>
       <div class="col-xl-1"></div>
     </div>
-    <div id="acknowledgeConfirmation" class="modal fade show" tabindex="-1">
+    <div class="modal fade show"
+         id="acknowledgeConfirmation"
+         tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -34,12 +36,18 @@
             <p id="confirmMessage"></p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" onclick="dismissModal()">OK</button>
+            <a th:href="@{/form}">
+              <button class="btn btn-primary"
+                      type="button">OK
+              </button>
+            </a>
           </div>
         </div>
       </div>
     </div>
-    <div id="rejectedConfirmation" class="modal fade show" tabindex="-1">
+    <div class="modal fade show"
+         id="rejectedConfirmation"
+         tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -49,7 +57,10 @@
             <p>Please try submitting again</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" onclick="dismissModal()">OK</button>
+            <button class="btn btn-primary"
+                    onclick="dismissModal()"
+                    type="button">OK
+            </button>
           </div>
         </div>
       </div>

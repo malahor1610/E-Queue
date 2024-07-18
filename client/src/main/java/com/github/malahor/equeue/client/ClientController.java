@@ -1,5 +1,7 @@
 package com.github.malahor.equeue.client;
 
+import com.github.malahor.equeue.domain.Customer;
+import com.github.malahor.equeue.domain.CustomerTopic;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -7,6 +9,7 @@ import java.util.Arrays;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -30,15 +33,28 @@ public class ClientController {
   }
 
   @GetMapping("/register")
-  public ModelAndView start(HttpServletRequest request, HttpServletResponse response) {
+  public ModelAndView registerView(HttpServletRequest request, HttpServletResponse response) {
     if (userIdCookieMissing(request)) attachUserIdCookie(response);
     return new ModelAndView("register");
   }
 
   @PostMapping("/register")
-  public ModelAndView registerInQueue(@CookieValue(name = "user-id") String id) {
+  public ModelAndView register(@CookieValue(name = "user-id") String id) {
     Thread.startVirtualThread(() -> service.register(id));
     return new ModelAndView("register");
+  }
+
+  @GetMapping("/form")
+  public ModelAndView formView(ModelMap model) {
+    model.addAttribute("topics", CustomerTopic.values());
+    model.addAttribute("form", new Customer());
+    return new ModelAndView("form");
+  }
+
+  @PostMapping("/form")
+  public ModelAndView form(@CookieValue(name = "user-id") String id, @ModelAttribute("form") Customer customer) {
+    Thread.startVirtualThread(() -> service.sendForm(id, customer));
+    return new ModelAndView("form");
   }
 
   private boolean userIdCookieMissing(HttpServletRequest request) {
