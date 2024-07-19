@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en"
+      th:fragment="layout(content, script, title)"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <th:block th:insert="~{shell/headlinks.html :: headlinks}"></th:block>
+    <title th:text="${title}"></title>
+    <script th:replace="${script}"></script>
+  </head>
+  <body class="d-flex flex-column min-vh-100 bg-light">
+    <div th:replace="${content}"></div>
+  </body>
+</html>

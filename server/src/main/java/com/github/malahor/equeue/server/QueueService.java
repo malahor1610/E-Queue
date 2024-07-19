@@ -24,4 +24,8 @@ public class QueueService {
     queue.offer(id);
     return QueuePosition.builder().id(id).number(number).pending(queue.size() - 1).build();
   }
+
+  public int queueSize() {
+    return queue.size();
+  }
 }

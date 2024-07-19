@@ -13,6 +13,7 @@ public class CustomerService {
   private final QueueService queueService;
   private final CustomerRepository repository;
   private final MessageSender sender;
+  private final SseEventProcessor eventProcessor;
 
   public void register(String id) {
     queueService
@@ -32,6 +33,20 @@ public class CustomerService {
     var customer = Customer.registered(queuePosition);
     repository.save(customer);
     sender.confirm(queuePosition);
+    sendQueueStatus(queueService.queueSize());
+  }
+
+  public void sendQueueStatus(int queueSize) {
+    var message =
+        String.format(
+            "There is a new record in the queue. Current size of the queue is %d", queueSize);
+    var sseEmitters = eventProcessor.getSseEmitters();
+    if (sseEmitters.isEmpty()) throw new RuntimeException();
+    sseEmitters.forEach(
+        emitterEntry -> {
+          if (emitterEntry.getValue() == null) throw new RuntimeException();
+          eventProcessor.sendQueueStatus(emitterEntry, message);
+        });
   }
 
   public void receiveForm(Form form) {

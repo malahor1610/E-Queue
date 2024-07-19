@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"
+      th:replace="~{shell/layout :: layout(~{::section}, ~{::script}, ${'E-Queue: Queuing'})}"
+      xmlns:th="http://www.thymeleaf.org">
+  <script>
+    $( document ).ready(function() {
+      initializeQueueSse();
+    });
+  </script>
+  <section class="w-75 align-self-center">
+    <div class="d-flex my-5 justify-content-center">
+      <div class="spinner-border"
+           role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <div class="modal fade show"
+         id="pending"
+         tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Pending in queue</h5>
+          </div>
+          <div class="modal-body">
+            <p id="pendingMessage"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</html>
