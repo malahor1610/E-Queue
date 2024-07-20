@@ -1,11 +1,20 @@
 package com.github.malahor.equeue.domain;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Transient;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@Embeddable
 public class Result {
 
-  private String id;
+  @Transient private String id;
   private Boolean approval;
-  private String comment;
+  private String justification;
+
+  public Result(String id) {
+    this.id = id;
+  }
 }

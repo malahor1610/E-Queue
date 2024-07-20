@@ -1,7 +1,6 @@
 package com.github.malahor.equeue.server;
 
-import com.github.malahor.equeue.domain.CustomerTopic;
-import com.github.malahor.equeue.domain.Form;
+import com.github.malahor.equeue.domain.Result;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,10 +9,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.web.servlet.view.RedirectView;
@@ -41,31 +37,27 @@ public class ServerController {
     return new ModelAndView("queue");
   }
 
-//  @PostMapping("/queue")
-//  public ModelAndView register(ModelMap model, @CookieValue(name = "user-id") String id) {
-//    Thread.startVirtualThread(() -> service.register(id));
-//    model.addAttribute("initializeEventEmitter", true);
-//    return new ModelAndView("register");
-//  }
+  @GetMapping("/form")
+  public ModelAndView formView(ModelMap model) {
+    var customer = service.serveCustomer();
+    model.addAttribute("form", customer);
+    model.addAttribute("result", new Result(customer.getId()));
+    return new ModelAndView("form");
+  }
 
-//  @GetMapping("/form")
-//  public ModelAndView formView(ModelMap model) {
-//    model.addAttribute("topics", CustomerTopic.values());
-//    model.addAttribute("form", new Form());
-//    return new ModelAndView("form");
-//  }
-//
-//  @PostMapping("/form")
-//  public RedirectView form(
-//      @CookieValue(name = "user-id") String id, @ModelAttribute("form") Form form) {
-//    Thread.startVirtualThread(() -> service.sendForm(id, form));
-//    return new RedirectView("/result");
-//  }
-//
-//  @GetMapping("/result")
-//  public ModelAndView resultView() {
-//    return new ModelAndView("result");
-//  }
+  @PostMapping(value = "/form", params = "action=approve")
+  public RedirectView approve(@ModelAttribute("result") Result result) {
+    result.setApproval(true);
+    service.saveResult(result);
+    return new RedirectView("/queue");
+  }
+
+  @PostMapping(value = "/form", params = "action=reject")
+  public RedirectView reject(@ModelAttribute("result") Result result) {
+    result.setApproval(false);
+    service.saveResult(result);
+    return new RedirectView("/queue");
+  }
 
   private boolean userIdCookieMissing(HttpServletRequest request) {
     return request.getCookies() == null

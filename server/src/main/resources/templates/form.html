@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en"
+      th:replace="~{shell/layout :: layout(~{::section}, ~{::script}, ${'E-Queue: Customer form'})}"
+      xmlns:th="http://www.thymeleaf.org">
+  <script></script>
+  <section class="w-75 align-self-center">
+    <div class="row mt-4">
+      <div class="col-xl-1"></div>
+      <div class="col-xl-10">
+        <div class="card mb-3 px-0">
+          <div class="card-body">
+            <div class="container">
+              <h3 class="my-3 text-center"
+                  th:text="'Review information and proceed with approval or rejection'"></h3>
+              <form class="justify-content-center"
+                    th:action="@{'/form'}"
+                    th:method="post"
+                    th:object="${result}">
+                <div class="row">
+                  <label class="form-label my-3 w-auto align-content-center"
+                         for="firstName">First name
+                  </label>
+                  <input class="form-control my-3 me-3 w-auto"
+                         disabled
+                         id="firstName"
+                         th:field="${form.firstName}"
+                         type="text">
+                </div>
+                <div class="row">
+                  <label class="form-label my-3 w-auto align-content-center"
+                         for="lastName">Last name
+                  </label>
+                  <input class="form-control my-3 me-3 w-auto"
+                         disabled
+                         id="lastName"
+                         th:field="${form.lastName}"
+                         type="text">
+                </div>
+                <div class="row">
+                  <label class="form-label my-3 w-auto align-content-center"
+                         for="topic">Topic
+                  </label>
+                  <input class="form-control my-3 me-3 w-auto"
+                         disabled
+                         id="topic"
+                         th:field="${form.topic.name}"
+                         type="text">
+                </div>
+                <div class="row">
+                  <label class="form-label my-3 w-auto"
+                         for="comment">Comment
+                  </label>
+                  <textarea class="form-control"
+                            disabled
+                            id="comment"
+                            rows="15"
+                            th:field="${form.comment}"></textarea>
+                </div>
+                <div class="row">
+                  <label class="form-label my-3 w-auto"
+                         for="justification">Decision justification
+                  </label>
+                  <textarea class="form-control"
+                            id="justification"
+                            rows="15"
+                            th:field="${result.justification}"></textarea>
+                </div>
+                <div class="text-end">
+                  <button class="my-3 btn btn-primary w-auto"
+                          name="action"
+                          type="submit"
+                          value="approve">Approve
+                  </button>
+                  <button class="my-3 btn btn-primary w-auto"
+                          name="action"
+                          type="submit"
+                          value="reject">Reject
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-1"></div>
+    </div>
+  </section>
+</html>

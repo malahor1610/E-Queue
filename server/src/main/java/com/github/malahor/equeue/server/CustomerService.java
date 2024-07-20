@@ -3,6 +3,7 @@ package com.github.malahor.equeue.server;
 import com.github.malahor.equeue.domain.Customer;
 import com.github.malahor.equeue.domain.Form;
 import com.github.malahor.equeue.domain.QueuePosition;
+import com.github.malahor.equeue.domain.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -59,5 +60,17 @@ public class CustomerService {
         "Attached form for %s with name %s %s",
         form.getId(), form.getFirstName(), form.getLastName());
     repository.save(customer);
+  }
+
+  public Customer serveCustomer() {
+    var id = queueService.getFromQueue();
+    if (id == null) throw new RuntimeException();
+    return repository.findById(id).orElseGet(this::serveCustomer);
+  }
+
+  public void saveResult(Result result) {
+    var customer = repository.findById(result.getId()).orElseThrow();
+    customer.updateWithResult(result);
+    sender.sendResult(result);
   }
 }

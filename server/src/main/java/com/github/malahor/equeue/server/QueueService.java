@@ -25,6 +25,10 @@ public class QueueService {
     return QueuePosition.builder().id(id).number(number).pending(queue.size() - 1).build();
   }
 
+  public synchronized String getFromQueue() {
+    return queue.poll();
+  }
+
   public int queueSize() {
     return queue.size();
   }
