@@ -16,15 +16,7 @@ public class MessageReceiver {
       id = KafkaTopicConfig.REGISTER_TOPIC_NAME,
       topics = KafkaTopicConfig.REGISTER_TOPIC_NAME,
       containerFactory = "registerListenerContainerFactory")
-  public void register(String id) {
-    service.register(id);
-  }
-
-  @KafkaListener(
-      id = KafkaTopicConfig.FORM_TOPIC_NAME,
-      topics = KafkaTopicConfig.FORM_TOPIC_NAME,
-      containerFactory = "formListenerContainerFactory")
   public void receiveForm(Form form) {
-    service.receiveForm(form);
+    service.register(form);
   }
 }

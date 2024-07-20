@@ -16,10 +16,11 @@ public class CustomerService {
   private final MessageSender sender;
   private final SseEventProcessor eventProcessor;
 
-  public void register(String id) {
+  public void register(Form form) {
+    var id = form.getId();
     queueService
         .queueContains(id)
-        .ifPresentOrElse(i -> handleAlreadyRegistered(id, i), () -> handleRegistration(id));
+        .ifPresentOrElse(i -> handleAlreadyRegistered(id, i), () -> handleRegistration(form));
   }
 
   private void handleAlreadyRegistered(String id, Integer i) {
@@ -29,9 +30,9 @@ public class CustomerService {
     sender.confirm(queuePosition);
   }
 
-  private void handleRegistration(String id) {
-    var queuePosition = queueService.putIntoQueue(id);
-    var customer = Customer.registered(queuePosition);
+  private void handleRegistration(Form form) {
+    var queuePosition = queueService.putIntoQueue(form.getId());
+    var customer = Customer.registered(form, queuePosition);
     repository.save(customer);
     sender.confirm(queuePosition);
     sendQueueStatus(queueService.queueSize());
@@ -48,18 +49,6 @@ public class CustomerService {
           if (emitterEntry.getValue() == null) throw new RuntimeException();
           eventProcessor.sendQueueStatus(emitterEntry, message);
         });
-  }
-
-  public void receiveForm(Form form) {
-    repository.findById(form.getId()).ifPresent(customer -> handleAttachingForm(customer, form));
-  }
-
-  private void handleAttachingForm(Customer customer, Form form) {
-    customer.updateWithForm(form);
-    System.out.printf(
-        "Attached form for %s with name %s %s",
-        form.getId(), form.getFirstName(), form.getLastName());
-    repository.save(customer);
   }
 
   public Customer serveCustomer() {

@@ -21,24 +21,7 @@ public class KafkaConsumerConfig {
   private String bootstrapAddress;
 
   @Bean
-  public ConsumerFactory<String, String> registerConsumerFactory() {
-    var props = new HashMap<String, Object>();
-    props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-    props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-    props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-    return new DefaultKafkaConsumerFactory<>(props);
-  }
-
-  @Bean
-  ConcurrentKafkaListenerContainerFactory<String, String> registerListenerContainerFactory() {
-    var factory = new ConcurrentKafkaListenerContainerFactory<String, String>();
-    factory.setConsumerFactory(registerConsumerFactory());
-    factory.getContainerProperties().setPollTimeout(3000);
-    return factory;
-  }
-
-  @Bean
-  public ConsumerFactory<String, Form> formConsumerFactory() {
+  public ConsumerFactory<String, Form> registerConsumerFactory() {
     var props = new HashMap<String, Object>();
     props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
     props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
@@ -48,9 +31,9 @@ public class KafkaConsumerConfig {
   }
 
   @Bean
-  ConcurrentKafkaListenerContainerFactory<String, Form> formListenerContainerFactory() {
+  ConcurrentKafkaListenerContainerFactory<String, Form> registerListenerContainerFactory() {
     var factory = new ConcurrentKafkaListenerContainerFactory<String, Form>();
-    factory.setConsumerFactory(formConsumerFactory());
+    factory.setConsumerFactory(registerConsumerFactory());
     factory.getContainerProperties().setPollTimeout(3000);
     return factory;
   }

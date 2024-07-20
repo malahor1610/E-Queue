@@ -19,21 +19,7 @@ public class KafkaProducerConfig {
   private String bootstrapAddress;
 
   @Bean
-  public ProducerFactory<String, String> registerProducerFactory() {
-    var props = new HashMap<String, Object>();
-    props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-    props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-    props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-    return new DefaultKafkaProducerFactory<>(props);
-  }
-
-  @Bean
-  public KafkaTemplate<String, String> registerKafkaTemplate() {
-    return new KafkaTemplate<>(registerProducerFactory());
-  }
-
-  @Bean
-  public ProducerFactory<String, Form> formProducerFactory() {
+  public ProducerFactory<String, Form> registerProducerFactory() {
     var props = new HashMap<String, Object>();
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
     props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -42,7 +28,7 @@ public class KafkaProducerConfig {
   }
 
   @Bean
-  public KafkaTemplate<String, Form> formKafkaTemplate() {
-    return new KafkaTemplate<>(formProducerFactory());
+  public KafkaTemplate<String, Form> registerKafkaTemplate() {
+    return new KafkaTemplate<>(registerProducerFactory());
   }
 }

@@ -11,16 +11,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class MessageSender {
 
-  private final KafkaTemplate<String, String> registerKafkaTemplate;
-  private final KafkaTemplate<String, Form> formKafkaTemplate;
-
-  @SneakyThrows
-  public void register(String id) {
-    registerKafkaTemplate.send(KafkaTopicConfig.REGISTER_TOPIC_NAME, id);
-  }
+  private final KafkaTemplate<String, Form> registerKafkaTemplate;
 
   @SneakyThrows
   public void sendForm(Form form) {
-    formKafkaTemplate.send(KafkaTopicConfig.FORM_TOPIC_NAME, form);
+    registerKafkaTemplate.send(KafkaTopicConfig.REGISTER_TOPIC_NAME, form);
   }
 }

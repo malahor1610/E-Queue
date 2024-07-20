@@ -13,11 +13,7 @@ public class ClientService {
   private final MessageSender sender;
   private final SseEventProcessor eventProcessor;
 
-  public void register(String id) {
-    sender.register(id);
-  }
-
-  public void sendForm(String id, Form form) {
+  public void register(String id, Form form) {
     form.setId(id);
     sender.sendForm(form);
   }
@@ -28,9 +24,9 @@ public class ClientService {
     eventProcessor.sendConfirmation(sseEmitter, queuePosition);
   }
 
-    public void result(Result result) {
-      var sseEmitter = eventProcessor.getSseEmitter(result.getId());
-      if (sseEmitter == null) throw new RuntimeException();
-      eventProcessor.sendResult(sseEmitter, result);
-    }
+  public void result(Result result) {
+    var sseEmitter = eventProcessor.getSseEmitter(result.getId());
+    if (sseEmitter == null) throw new RuntimeException();
+    eventProcessor.sendResult(sseEmitter, result);
+  }
 }

@@ -33,30 +33,22 @@ public class ClientController {
   }
 
   @GetMapping("/register")
-  public ModelAndView registerView(HttpServletRequest request, HttpServletResponse response) {
+  public ModelAndView registerView(
+      ModelMap model, HttpServletRequest request, HttpServletResponse response) {
     if (userIdCookieMissing(request)) attachUserIdCookie(response);
+    model.addAttribute("topics", CustomerTopic.values());
+    model.addAttribute("form", new Form());
     return new ModelAndView("register");
   }
 
   @PostMapping("/register")
-  public ModelAndView register(ModelMap model, @CookieValue(name = "user-id") String id) {
-    Thread.startVirtualThread(() -> service.register(id));
+  public ModelAndView register(
+      ModelMap model, @CookieValue(name = "user-id") String id, @ModelAttribute("form") Form form) {
+    Thread.startVirtualThread(() -> service.register(id, form));
     model.addAttribute("initializeEventEmitter", true);
-    return new ModelAndView("register");
-  }
-
-  @GetMapping("/form")
-  public ModelAndView formView(ModelMap model) {
     model.addAttribute("topics", CustomerTopic.values());
-    model.addAttribute("form", new Form());
-    return new ModelAndView("form");
-  }
-
-  @PostMapping("/form")
-  public RedirectView form(
-      @CookieValue(name = "user-id") String id, @ModelAttribute("form") Form form) {
-    Thread.startVirtualThread(() -> service.sendForm(id, form));
-    return new RedirectView("/result");
+    model.addAttribute("form", form);
+    return new ModelAndView("register");
   }
 
   @GetMapping("/result")

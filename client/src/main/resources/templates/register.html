@@ -14,12 +14,55 @@
             <div class="container">
               <h3 class="my-3 text-center"
                   th:text="'Welcome to registration page, stand (hihihi) in a queue and wait for Your turn'"></h3>
-              <form class="row justify-content-center"
+              <form class="justify-content-center"
                     th:action="@{'/register'}"
-                    th:method="post">
-                <button class="my-3 col-auto btn btn-primary w-auto"
-                        type="submit">Submit
-                </button>
+                    th:method="post"
+                    th:object="${form}">
+                <div class="row">
+                  <label class="form-label my-3 w-auto align-content-center"
+                         for="firstName">First name
+                  </label>
+                  <input class="form-control my-3 me-3 w-auto"
+                         id="firstName"
+                         th:field="${form.firstName}"
+                         type="text">
+                </div>
+                <div class="row">
+                  <label class="form-label my-3 w-auto align-content-center"
+                         for="lastName">Last name
+                  </label>
+                  <input class="form-control my-3 me-3 w-auto"
+                         id="lastName"
+                         th:field="${form.lastName}"
+                         type="text">
+                </div>
+                <div class="row">
+                  <label class="form-label my-3 w-auto align-content-center"
+                         for="topic">Topic
+                  </label>
+                  <select class="form-select my-3 me-3 w-auto"
+                          id="topic"
+                          th:field="${form.topic}">
+                    <option th:each="option : ${topics}"
+                            th:text="${option.name}"
+                            th:value="${option}">
+                    </option>
+                  </select>
+                </div>
+                <div class="row">
+                  <label class="form-label my-3 w-auto"
+                         for="comment">Comment
+                  </label>
+                  <textarea class="form-control"
+                            id="comment"
+                            rows="15"
+                            th:field="${form.comment}"></textarea>
+                </div>
+                <div class="text-end">
+                  <button class="my-3 btn btn-primary w-auto"
+                          type="submit">Register
+                  </button>
+                </div>
               </form>
             </div>
           </div>
@@ -39,7 +82,7 @@
             <p id="confirmMessage"></p>
           </div>
           <div class="modal-footer">
-            <a th:href="@{/form}">
+            <a th:href="@{/result}">
               <button class="btn btn-primary"
                       type="button">OK
               </button>
