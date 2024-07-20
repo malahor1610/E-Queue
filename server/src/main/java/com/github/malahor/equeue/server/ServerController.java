@@ -40,7 +40,7 @@ public class ServerController {
   @GetMapping("/form")
   public ModelAndView formView(ModelMap model) {
     var customer = service.serveCustomer();
-    model.addAttribute("form", customer);
+    model.addAttribute("form", customer.getInfo());
     model.addAttribute("result", new Result(customer.getId()));
     return new ModelAndView("form");
   }

@@ -19,6 +19,7 @@ function initializeResultSse() {
     source.addEventListener('message', (e) => {
         $('#approval').attr("style", "display: block;");
         $('#approveMessage').text(e.data);
+        source.close();
     });
 
     source.addEventListener('error', (e) => {
