@@ -17,4 +17,9 @@ public class Result {
   public Result(String id) {
     this.id = id;
   }
+
+  @Override
+  public String toString() {
+    return String.format("By the decision of us, Your request was %s. Justification of the decision is as follows: %n%s.%nThank You for using our new app, You can now close the tab in a browser", approval ? "accepted" : "rejected", justification);
+  }
 }

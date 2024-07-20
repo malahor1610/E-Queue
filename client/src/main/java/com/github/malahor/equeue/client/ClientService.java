@@ -2,6 +2,7 @@ package com.github.malahor.equeue.client;
 
 import com.github.malahor.equeue.domain.Form;
 import com.github.malahor.equeue.domain.QueuePosition;
+import com.github.malahor.equeue.domain.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,4 +27,10 @@ public class ClientService {
     if (sseEmitter == null) throw new RuntimeException();
     eventProcessor.sendConfirmation(sseEmitter, queuePosition);
   }
+
+    public void result(Result result) {
+      var sseEmitter = eventProcessor.getSseEmitter(result.getId());
+      if (sseEmitter == null) throw new RuntimeException();
+      eventProcessor.sendResult(sseEmitter, result);
+    }
 }
