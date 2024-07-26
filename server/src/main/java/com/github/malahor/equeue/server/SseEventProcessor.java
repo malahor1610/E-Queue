@@ -1,6 +1,5 @@
 package com.github.malahor.equeue.server;
 
-
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.SneakyThrows;
@@ -14,10 +13,6 @@ public class SseEventProcessor {
 
   public SseEmitter createSseEmitter(String id) {
     return sseEmitters.put(id, new SseEmitter());
-  }
-
-  public SseEmitter getSseEmitter(String id) {
-    return sseEmitters.get(id);
   }
 
   public Set<Map.Entry<String, SseEmitter>> getSseEmitters() {

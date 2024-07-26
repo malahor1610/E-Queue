@@ -3,6 +3,7 @@ function initializeQueueSse() {
     source.addEventListener('message', (e) => {
         $('#pending').attr("style", "display: block;");
         $('#pendingMessage').text(e.data);
+        source.close();
     });
 
     source.addEventListener('error', (e) => {

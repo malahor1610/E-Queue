@@ -3,6 +3,7 @@ function initializeSse() {
     source.addEventListener('message', (e) => {
         $('#acknowledgeConfirmation').attr("style", "display: block;");
         $('#confirmMessage').text(e.data);
+        source.close();
     });
 
     source.addEventListener('error', (e) => {
