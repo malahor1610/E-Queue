@@ -60,4 +60,12 @@
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub malahor1610 Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/malahor1610/com.github.malahor.equeue</url>
+		</repository>
+	</distributionManagement>
 </project>
