@@ -65,7 +65,7 @@
 		<repository>
 			<id>github</id>
 			<name>GitHub malahor1610 Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/malahor1610/com.github.malahor.equeue</url>
+			<url>https://maven.pkg.github.com/malahor1610/E-Queue</url>
 		</repository>
 	</distributionManagement>
 </project>
