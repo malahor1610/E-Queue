@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.github.malahor</groupId>
         <artifactId>equeue</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <groupId>com.github.malahor.equeue</groupId>
